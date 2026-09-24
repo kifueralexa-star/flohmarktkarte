@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<title>Hofflohmarkt Karte</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 1600px;
+    height: 900px;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  #map {
+    width: 1600px;
+    height: 900px;
+  }
+
+  .marker {
+    background-color: #e85d04;
+    width: 12px; /* mittel */
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<script>
+  // Mittelpunkt Hanseviertel
+  const center = [53.25445, 10.43778];
+  const zoom = 15;
+
+  const map = L.map('map', {
+    center,
+    zoom,
+    zoomControl: false
+  });
+
+  // OSM Tiles
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  // Marker aus GeoJSON
+  const data = {{GEOJSON}};
+
+  data.features.forEach(f => {
+    const [lon, lat] = f.geometry.coordinates;
+    const el = L.divIcon({
+      className: '',
+      html: '<div class="marker"></div>',
+      iconSize: [12, 12],
+      iconAnchor: [6, 6]
+    });
+    L.marker([lat, lon], { icon: el }).addTo(map);
+  });
+</script>
+
+</body>
+</html>
